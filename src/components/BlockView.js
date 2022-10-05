@@ -1,12 +1,16 @@
 import { useRef, useState } from "react";
+import TableBlockView from "./blockComponents/tableBlock/TableBlockView";
 import TextBlockView from "./blockComponents/textBlock/TextBlockView";
+import ToDoBlockView from "./blockComponents/toDoBlock/ToDoBlockView";
+import Button from "./Button";
+import "./blockView.css";
 
 function BlockView() {
-
     const ref = useRef(null);
     const [currentItem, setCurrentItem] = useState(null);
     const [type, setType] = useState("text");
     const [properties, setProperties] = useState(["id", "text", "completed"]);
+    const [visible, setVisible] = useState(false);
     const [data, setData] = useState([
         {
             id: crypto.randomUUID(),
@@ -15,6 +19,7 @@ function BlockView() {
         }
     ]);
 
+    // handleChange, realiza cambios en el estado de data dependiendo de en que type estamos.
     function handleChange(item){
         const {type, text, id} = item;
 
@@ -26,8 +31,28 @@ function BlockView() {
                 setData(temp);
             }
         }
+
+        if(type === "todo"){
+            const temp = [...data];
+            const editItem = temp.find(i => i.id === id);
+            if(editItem){
+                editItem.text = text ?? editItem.text;
+                editItem.completed = item.completed ?? editItem.completed;
+                setData(temp);
+            }
+        }
+
+        if(type === "table"){
+            const temp = [...data];
+            let editItem = temp.find(i => i.id === id);
+            if(editItem){
+                editItem = item.updatedItem;
+                setData(temp);
+            }
+        }
     }
 
+    //
     function handleOnCreate() {
         const newItem = {
             id: crypto.randomUUID(),
@@ -46,10 +71,83 @@ function BlockView() {
         setCurrentItem(newItem);
     }
 
+    function TypesSelector() {
+        return ( 
+            <div style={{position: "relative", marginTop: "20px"}}>
+                <Button inverted menu onClick={() => setVisible(!visible)}>...</Button>
+                <div className="typesSelectorButtons" style={{display: visible ? "flex" : "none"}}>
+                    <button className="blockViewButton" onClick={() => setType("text")}>Text</button>
+                    <button className="blockViewButton" onClick={() => setType("todo")}>ToDo</button>
+                    <button className="blockViewButton" onClick={() => setType("table")}>Table</button>
+                </div>
+            </div>
+        );
+    }
+
+    function handleNewColumn(name) {
+        updateProperties(name);
+    }
+    
+    function updateProperties(name) {
+        const newProperties = [...properties, name];
+
+        const temp = [...data];
+
+        for(let i = 0; i < temp.length; i++){
+            const item = temp[i];
+            for(let j = 0; j < newProperties.length; j++){
+                const prop = newProperties[j];
+                if(item.hasOwnProperty(prop)){
+                    console.log("ya existe la propiedad", prop);
+                } else {
+                    item[prop] = "test";
+                }
+            }
+        }
+        setProperties(newProperties);
+        setData(temp);
+
+    }
+
+    if(type === "todo"){
+        return (
+            <div className="blockViewContainer">
+                <TypesSelector />
+                <ToDoBlockView
+                    ref={ref} 
+                    focusId={currentItem?.id}
+                    data={data} 
+                    onChange={handleChange} 
+                    onCreate={handleOnCreate}
+                />
+            </div>
+        )
+    }
+
+    if(type === "table"){
+        return (
+            <div className="blockViewContainer">
+                <TypesSelector />
+                <TableBlockView
+                    ref={ref} 
+                    focusId={currentItem?.id}
+                    data={data} 
+                    columns={properties}
+                    onChange={handleChange} 
+                    onCreate={handleOnCreate}
+                    onCreateNewColumn={handleNewColumn}
+                />
+            </div>
+        )
+    }
+
     return (
-        <div>
+        <div className="blockViewContainer">
+            
+            <TypesSelector />
             <TextBlockView 
                 ref={ref} 
+                focusId={currentItem?.id}
                 data={data} 
                 onChange={handleChange} 
                 onCreate={handleOnCreate}

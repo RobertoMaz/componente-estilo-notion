@@ -1,7 +1,13 @@
-import { forwardRef } from "react";
+import { forwardRef, useEffect } from "react";
 import TextBlock from "./TextBlock";
 
-function TextBlockView({data, onChange, onCreate}, ref) {
+function TextBlockView({data, onChange, onCreate, focusId}, ref) {
+
+    useEffect(() => {
+        if(focusId){
+            ref.current.focus();
+        }
+    }, [focusId]);
 
     function handleOnChange(item, e) {
         onChange({
@@ -20,6 +26,8 @@ function TextBlockView({data, onChange, onCreate}, ref) {
 
     return data.map((item) => (
         <TextBlock 
+            ref={ref}
+            focus={focusId === item.id}
             key={item.id} 
             item={item} 
             onChange={handleOnChange}

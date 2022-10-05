@@ -1,6 +1,7 @@
+import { forwardRef } from "react";
 import Input from "../../Input";
 
-function TextBlock({item, onChange, onKeyDown}) {
+function TextBlock({item, onChange, onKeyDown, focus}, ref) {
 
 
     function handleOnChange(e) {
@@ -13,6 +14,8 @@ function TextBlock({item, onChange, onKeyDown}) {
 
     return (
         <Input 
+            border
+            ref={focus ? ref : null}
             value={item.text} 
             onChange={handleOnChange}
             onKeyDown={handleOnKeyDown}
@@ -21,4 +24,4 @@ function TextBlock({item, onChange, onKeyDown}) {
     );
 }
 
-export default TextBlock;
+export default forwardRef(TextBlock);
