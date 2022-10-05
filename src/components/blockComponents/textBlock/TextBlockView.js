@@ -36,6 +36,4 @@ function TextBlockView({data, onChange, onCreate, focusId}, ref) {
     ));
 }
 
-
-
 export default forwardRef(TextBlockView);

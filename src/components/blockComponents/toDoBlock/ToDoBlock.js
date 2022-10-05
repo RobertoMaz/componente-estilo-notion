@@ -1,7 +1,6 @@
 import { forwardRef } from "react";
 import Input from "../../Input";
 
-
 function ToDoBlock({focus, item, onChange, onKeyDown}, ref) {
 
     function handleOnChange(e) {
@@ -11,7 +10,6 @@ function ToDoBlock({focus, item, onChange, onKeyDown}, ref) {
     function handleOnKeyDown(e) {
         onKeyDown(item, e);
     }
-
 
     return (
         <div>

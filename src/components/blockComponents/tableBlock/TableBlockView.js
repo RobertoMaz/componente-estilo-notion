@@ -2,11 +2,10 @@ import { forwardRef } from "react";
 import Button from "../../Button";
 import TableBlock from "./TableBlock";
 
-function TableBlockView({focusId, data, columns, onChange, onCreate, onCreateNewColumn}, ref) {
-
+function TableBlockView({data, columns, onChange, onCreate, onCreateNewColumn}) {
 
     function handleNewColumn() {
-        const name = prompt("Name of the new column");
+        const name = prompt("Nombre de la columna");
         if(!!name) {
             onCreateNewColumn(name);
         }
@@ -29,8 +28,8 @@ function TableBlockView({focusId, data, columns, onChange, onCreate, onCreateNew
 
     return (
         <div>
-            <Button onClick={handleNewColumn}>Add new column</Button>
-            <Button onClick={handleNewRow}>Add new row</Button>
+            <Button onClick={handleNewColumn}>Agregar nueva columna</Button>
+            <Button onClick={handleNewRow}>Agregar nueva fila</Button>
             <TableBlock 
                 columns={columns} 
                 data={data}

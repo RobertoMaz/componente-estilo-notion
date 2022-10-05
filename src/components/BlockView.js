@@ -14,7 +14,7 @@ function BlockView() {
     const [data, setData] = useState([
         {
             id: crypto.randomUUID(),
-            text: "hola a todos",
+            text: "",
             completed: false
         }
     ]);
@@ -52,11 +52,11 @@ function BlockView() {
         }
     }
 
-    //
+    // handleOnCreate, podemos crear campos nuevos
     function handleOnCreate() {
         const newItem = {
             id: crypto.randomUUID(),
-            text: "hola",
+            text: "",
             completed: false
         };
 
@@ -71,42 +71,42 @@ function BlockView() {
         setCurrentItem(newItem);
     }
 
+    // TypesSelector, podemos seleccionar el type de los botones.
     function TypesSelector() {
         return ( 
             <div style={{position: "relative", marginTop: "20px"}}>
+                
+                {/* Button es un styled component que va abrir el menu de seleccion. */}
                 <Button inverted menu onClick={() => setVisible(!visible)}>...</Button>
                 <div className="typesSelectorButtons" style={{display: visible ? "flex" : "none"}}>
-                    <button className="blockViewButton" onClick={() => setType("text")}>Text</button>
-                    <button className="blockViewButton" onClick={() => setType("todo")}>ToDo</button>
-                    <button className="blockViewButton" onClick={() => setType("table")}>Table</button>
+                    <button className="blockViewButton" onClick={() => setType("text")}>LISTA DE TAREAS</button>
+                    <button className="blockViewButton" onClick={() => setType("todo")}>TAREAS REALIZADAS</button>
+                    <button className="blockViewButton" onClick={() => setType("table")}>TABLA DE TAREAS</button>
                 </div>
             </div>
         );
     }
 
+    // handleNewColumn, nos permite crear nuevas columnas
     function handleNewColumn(name) {
-        updateProperties(name);
-    }
-    
-    function updateProperties(name) {
         const newProperties = [...properties, name];
-
         const temp = [...data];
 
         for(let i = 0; i < temp.length; i++){
             const item = temp[i];
+
             for(let j = 0; j < newProperties.length; j++){
                 const prop = newProperties[j];
+
                 if(item.hasOwnProperty(prop)){
                     console.log("ya existe la propiedad", prop);
                 } else {
-                    item[prop] = "test";
+                    item[prop] = "";
                 }
             }
         }
         setProperties(newProperties);
         setData(temp);
-
     }
 
     if(type === "todo"){
@@ -121,9 +121,10 @@ function BlockView() {
                     onCreate={handleOnCreate}
                 />
             </div>
-        )
+        );
     }
 
+    //TODO: crear boton para borrar columnas
     if(type === "table"){
         return (
             <div className="blockViewContainer">
@@ -138,12 +139,11 @@ function BlockView() {
                     onCreateNewColumn={handleNewColumn}
                 />
             </div>
-        )
+        );
     }
 
     return (
         <div className="blockViewContainer">
-            
             <TypesSelector />
             <TextBlockView 
                 ref={ref} 
@@ -152,7 +152,6 @@ function BlockView() {
                 onChange={handleChange} 
                 onCreate={handleOnCreate}
             />
-
         </div>
     );
 }

@@ -3,7 +3,6 @@ import Input from "../../Input";
 
 function TextBlock({item, onChange, onKeyDown, focus}, ref) {
 
-
     function handleOnChange(e) {
         onChange(item, e);
     }
@@ -15,6 +14,7 @@ function TextBlock({item, onChange, onKeyDown, focus}, ref) {
     return (
         <Input 
             border
+            placeholder="Ingresa tu tarea"
             ref={focus ? ref : null}
             value={item.text} 
             onChange={handleOnChange}

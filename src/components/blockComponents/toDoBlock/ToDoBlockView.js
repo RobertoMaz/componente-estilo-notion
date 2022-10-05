@@ -1,14 +1,9 @@
 import ToDoBlock from "./ToDoBlock";
-import { forwardRef, useEffect } from "react";
+import { forwardRef } from "react";
 
 function ToDoBlockView({data, onChange, onCreate, focusId}, ref) {
 
-    useEffect(() => {
-        if(focusId){
-            ref.current.focus();
-        }
-    }, [focusId]);
-
+    //handleOnChange, nos permite  hacer switch entre checkbox y text, despues pasa parametros a onChange, para poder realizar los cambios.
     function handleOnChange(item, e) {
         switch (e.target.name) {
             case "checkbox":
@@ -17,34 +12,30 @@ function ToDoBlockView({data, onChange, onCreate, focusId}, ref) {
                     id: item.id,
                     completed: e.target.checked    
                 });
-                
-                break;
-                case "text":
-                    onChange({
-                        type: "todo",
-                        id: item.id,
-                        text: e.target.value    
-                    });   
-                break;
+            break;
+
+            case "text":
+                onChange({
+                    type: "todo",
+                    id: item.id,
+                    text: e.target.value    
+                });   
+            break;
         
             default:
                 break;
         }
-        // onChange({
-        //     type: "text",
-        //     id: item.id,
-        //     text: e.target.value,
-        //     completed: item.completed
-        // });
     }
 
-    function handleOnKeyDown(item, e) {
+    // handleOnKeyDown, esta a la espera del Evento en este caso seria cuando apretamos "Enter", ejecutar onCreate();
+    function handleOnKeyDown(e) {
         if(e.key === "Enter"){
             onCreate();
         }
     }
 
     return data.map((item) => (
+        // en ToDoBlock vamos a encontrar los inputs de la seccion ToDo.
         <ToDoBlock 
             ref={ref}
             focus={focusId === item.id}

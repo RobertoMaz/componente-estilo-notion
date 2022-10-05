@@ -1,12 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import Input from "../../Input";
 
-
 function Cell({text, onChange, canBeEdited}) {
-
     const [editable, setEditable] = useState(false);
     const [value, setValue] = useState(text);
-
     const ref = useRef(null);
 
     useEffect(() => {
@@ -19,10 +16,8 @@ function Cell({text, onChange, canBeEdited}) {
         }
     }, [editable]);
 
-
     function handleOnDoubleClick() {
         setEditable(true);
-        //ref.current.focus();
     }
 
     function handleOnChange(e) {
@@ -41,19 +36,19 @@ function Cell({text, onChange, canBeEdited}) {
     }
 
     return editable && canBeEdited
-        ? (<td>
+        ?   (<td>
                 <Input 
                     value={value} 
                     onChange={handleOnChange}
                     ref={ref}  
                     onBlur={handleOnBlur}  
                     onKeyDown={handleOnKeyDown}
-                ></Input>
+                />
             </td>)
-        : (<td 
-            key={crypto.randomUUID()}
-            onDoubleClick={handleOnDoubleClick}>
-            {value}
+        :   (<td 
+                key={crypto.randomUUID()}
+                onDoubleClick={handleOnDoubleClick}>
+                {value}
             </td>
         );
 }
