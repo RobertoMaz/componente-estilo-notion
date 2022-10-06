@@ -3,7 +3,7 @@ import Cell from "./Cell";
 import Headers from "./Headers";
 import "./table.css"
 
-function TableBlock({columns, data, onChange}) {
+function TableBlock({columns, data, onChange}, ref) {
     return (
         <table>
             <thead>
