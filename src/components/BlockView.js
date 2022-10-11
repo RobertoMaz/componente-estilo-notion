@@ -92,40 +92,18 @@ function BlockView() {
         const newProperties = [...properties, name];
         const temp = [...data];
 
-
-        //TODO: estamos mejorando el creado de columnas
-
-        if(temp.hasOwnProperty(name)){
-
-        }
-
         for(let i = 0; i < temp.length; i++){
             const item = temp[i];
 
             for(let j = 0; j < newProperties.length; j++){
                 const prop = newProperties[j];
 
-                if(item.hasOwnProperty(prop)){
-                    console.log("ya existe la propiedad", prop);
-                } else {
+                if(!item.hasOwnProperty(prop)){
                     item[prop] = "";
-                }
+                    
+                } 
             }
         }
-
-        // for(let i = 0; i < temp.length; i++){
-        //     const item = temp[i];
-
-        //     for(let j = 0; j < newProperties.length; j++){
-        //         const prop = newProperties[j];
-
-        //         if(item.hasOwnProperty(prop)){
-        //             console.log("ya existe la propiedad", prop);
-        //         } else {
-        //             item[prop] = "";
-        //         }
-        //     }
-        // }
         setProperties(newProperties);
         setData(temp);
     }
@@ -133,8 +111,13 @@ function BlockView() {
     function handleRemoveColumn(name) {
         const temp = [...properties];
         const nTemp = temp.indexOf(name);
-        temp.splice(nTemp,1);
-        setProperties(temp);
+        
+        if(name === "id" || name === "completed"){
+            alert("no se puede eliminar la columna!");
+        } else {
+            temp.splice(nTemp,1);
+            setProperties(temp);
+        }
     }
 
     if(type === "todo"){
